@@ -7,7 +7,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 from inference.base_inference_engine import AbstractInferenceEngine
 from inference.exceptions import InvalidModelConfiguration, InvalidInputData, ApplicationError
-
+from requests
 
 class InferenceEngine(AbstractInferenceEngine):
 
@@ -41,7 +41,7 @@ class InferenceEngine(AbstractInferenceEngine):
 	async def infer(self, input_data, draw, predict_batch):
 		await asyncio.sleep(0.00001)
 		try:
-			pillow_image = Image.open(input_data.file).convert('RGB')
+			pillow_image = Image.open(requests.get(input_data, stream=True).raw).convert('RGB')
 			np_image = np.array(pillow_image)
 		except Exception as e:
 			raise InvalidInputData('corrupted image')

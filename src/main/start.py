@@ -167,7 +167,7 @@ async def run_model_batch(model_name: str, input_data: List[UploadFile] = File(.
 
 
 @app.post('/models/{model_name}/predict_image')
-async def predict_image(model_name: str, input_data: UploadFile = File(...)):
+async def predict_image(model_name: str, input_data: str):
 	"""
 	Draws bounding box(es) on image and returns it.
 	:param model_name: Model name
@@ -177,7 +177,8 @@ async def predict_image(model_name: str, input_data: UploadFile = File(...)):
 	try:
 		output = await dl_service.run_model(model_name, input_data, draw=True, predict_batch=False)
 		error_logging.info('request successful;' + str(output))
-		return FileResponse("/main/public/result.jpg", media_type="image/jpg")
+		#return FileResponse("/main/public/result.jpg", media_type="image/jpg")
+		return {"url": "/public/result.jpg"}
 	except ApplicationError as e:
 		error_logging.warning(model_name + ';' + str(e))
 		return ApiResponse(success=False, error=e)
